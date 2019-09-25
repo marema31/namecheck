@@ -7,45 +7,53 @@ import (
 )
 
 func TestValidgithubUsername(t *testing.T) {
-	if !github.Check("marema31") || !github.Check("golang") {
+	var g github.Github
+	if !g.Check("marema31") || !g.Check("golang") {
 		t.Error("Validation of valid username failed")
 	}
 }
 func TestgithubUsernameTooShort(t *testing.T) {
-	if github.Check("") {
+	var g github.Github
+	if g.Check("") {
 		t.Error("Validation of too short username failed")
 	}
 }
 func TestgithubUsernameTooLong(t *testing.T) {
-	if github.Check("My-RidiculousLongNameAndSomeIsTooLongOrToMuch") {
+	var g github.Github
+	if g.Check("My-RidiculousLongNameAndSomeIsTooLongOrToMuch") {
 		t.Error("Validation of too long username failed")
 	}
 }
 func TestgithubUsernameInvalidPattern(t *testing.T) {
-	if github.Check("Thegithub") {
+	var g github.Github
+	if g.Check("Thegithub") {
 		t.Error("Validation of username containing pattern failed")
 	}
 }
 func TestgithubUsernameInvalidCharacters(t *testing.T) {
-	if github.Check("是法国人") {
+	var g github.Github
+	if g.Check("是法国人") {
 		t.Error("Validation of unicode username failed")
 	}
 }
 
 func TestgithubUsernameInvalidStartWith(t *testing.T) {
-	if github.Check("-Thegithub") {
+	var g github.Github
+	if g.Check("-Thegithub") {
 		t.Error("Validation of username containing pattern failed")
 	}
 }
 
 func TestgithubUsernameInvalidEndWith(t *testing.T) {
-	if github.Check("Thegithub-") {
+	var g github.Github
+	if g.Check("Thegithub-") {
 		t.Error("Validation of username containing pattern failed")
 	}
 }
 
 func TestgithubUsernameInvalidDoubleDash(t *testing.T) {
-	if github.Check("The--github") {
+	var g github.Github
+	if g.Check("The--github") {
 		t.Error("Validation of username containing pattern failed")
 	}
 }

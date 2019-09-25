@@ -6,9 +6,11 @@ import (
 	"github.com/marema31/namecheck/validate"
 )
 
+type Twitter struct{}
+
 var alphanum = regexp.MustCompile("^[a-zA-Z_0-9]*$")
 
-func Check(username string) bool {
+func (t *Twitter) Check(username string) bool {
 	if !validate.LengthLimit(username, 1, 15) {
 		return false
 	}

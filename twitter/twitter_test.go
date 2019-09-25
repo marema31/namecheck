@@ -7,27 +7,32 @@ import (
 )
 
 func TestValidTwitterUsername(t *testing.T) {
-	if !twitter.Check("marema31") || !twitter.Check("golang") {
+	var tw twitter.Twitter
+	if !tw.Check("marema31") || !tw.Check("golang") {
 		t.Error("Validation of valid username failed")
 	}
 }
 func TestTwitterUsernameTooShort(t *testing.T) {
-	if twitter.Check("") {
+	var tw twitter.Twitter
+	if tw.Check("") {
 		t.Error("Validation of too short username failed")
 	}
 }
 func TestTwitterUsernameTooLong(t *testing.T) {
-	if twitter.Check("MyRidiculousLongName") {
+	var tw twitter.Twitter
+	if tw.Check("MyRidiculousLongName") {
 		t.Error("Validation of too long username failed")
 	}
 }
 func TestTwitterUsernameInvalidPattern(t *testing.T) {
-	if twitter.Check("TheTwiTtEr") {
+	var tw twitter.Twitter
+	if tw.Check("TheTwiTtEr") {
 		t.Error("Validation of username containing pattern failed")
 	}
 }
 func TestTwitterUsernameInvalidCharacters(t *testing.T) {
-	if twitter.Check("是法国人") {
+	var tw twitter.Twitter
+	if tw.Check("是法国人") {
 		t.Error("Validation of unicode username failed")
 	}
 }

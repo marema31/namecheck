@@ -6,12 +6,14 @@ import (
 	"github.com/marema31/namecheck/validate"
 )
 
+type Github struct{}
+
 var alphanum = regexp.MustCompile("^[-a-zA-Z0-9]*$")
 var beginWith = regexp.MustCompile("^[a-zA-Z0-9]")
 var endWith = regexp.MustCompile("[a-zA-Z0-9]$")
 var doubleDash = regexp.MustCompile("--$")
 
-func Check(username string) bool {
+func (g *Github) Check(username string) bool {
 	if !validate.LengthLimit(username, 1, 39) {
 		return false
 	}
