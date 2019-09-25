@@ -3,12 +3,16 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/marema31/namecheck/github"
 	"github.com/marema31/namecheck/twitter"
 )
 
 func main() {
+	// Declare a real http.Client that we will override in tests
+	var web = http.DefaultClient
+
 	var t twitter.Twitter
 	var g github.Github
 
@@ -20,7 +24,7 @@ func main() {
 		fmt.Printf("    Twitter: ")
 		if t.Check(username) {
 			fmt.Printf("valid")
-			available, err := t.IsAvailable(username)
+			available, err := t.IsAvailable(web, username)
 			if err != nil {
 				log.Printf("No way to contact Twitter: %s", err)
 
@@ -45,9 +49,9 @@ func main() {
 		fmt.Printf("    Github:  ")
 		if g.Check(username) {
 			fmt.Printf("valid")
-			available, err := t.IsAvailable(username)
+			available, err := g.IsAvailable(web, username)
 			if err != nil {
-				log.Fatalf("No way to contact Twitter: %V", err)
+				log.Fatalf("No way to contact Github: %v", err)
 			}
 			if available {
 				fmt.Println(", available")

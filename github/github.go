@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/marema31/namecheck/validate"
+	"github.com/marema31/namecheck/webclient"
 )
 
 type Github struct{}
@@ -15,18 +16,6 @@ var alphanum = regexp.MustCompile("^[-a-zA-Z0-9]*$")
 var beginWith = regexp.MustCompile("^[a-zA-Z0-9]")
 var endWith = regexp.MustCompile("[a-zA-Z0-9]$")
 var doubleDash = regexp.MustCompile("--$")
-
-type ErrNetworkFailure struct {
-	Cause error
-}
-
-func (e *ErrNetworkFailure) Error() string {
-	return "Network Error"
-}
-
-func (e *ErrNetworkFailure) Unwrap() error {
-	return e.Cause
-}
 
 func (g *Github) Check(username string) bool {
 	if !validate.LengthLimit(username, 1, 39) {
@@ -47,10 +36,16 @@ func (g *Github) Check(username string) bool {
 	return true
 }
 
-func (g *Github) IsAvailable(username string) (bool, error) {
-	res, err := http.Get(url + username)
+func (g *Github) IsAvailable(client webclient.Http, username string) (bool, error) {
+	req, err := http.NewRequest("GET", url+username, nil)
 	if err != nil {
-		return false, &ErrNetworkFailure{Cause: err}
+		return false, err
+	}
+
+	// Use the web variable and not a http.Client to allow overriding
+	res, err := client.Do(req)
+	if err != nil {
+		return false, &webclient.ErrNetworkFailure{Cause: err}
 	}
 
 	defer res.Body.Close()
