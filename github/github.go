@@ -17,6 +17,10 @@ var beginWith = regexp.MustCompile("^[a-zA-Z0-9]")
 var endWith = regexp.MustCompile("[a-zA-Z0-9]$")
 var doubleDash = regexp.MustCompile("--$")
 
+func (g *Github) Name() string {
+	return "Github"
+}
+
 func (g *Github) Check(username string) bool {
 	if !validate.LengthLimit(username, 1, 39) {
 		return false
